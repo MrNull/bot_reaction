@@ -1,0 +1,103 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "legend": { "showLegend": true },
+        "tooltip": { "mode": "multi" }
+      },
+      "targets": [
+        {
+          "expr": "count_over_time({container=\"reaction-bot\", level=\"INFO\", event=\"reaction_added\"}[1m])",
+          "legendFormat": "Reactions per minute",
+          "refId": "A"
+        }
+      ],
+      "title": "📈 Количество поставленных реакций",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "id": 2,
+      "targets": [
+        {
+          "expr": "count_over_time({container=\"reaction-bot\", level=\"ERROR\"}[5m])",
+          "legendFormat": "Ошибки за 5 минут",
+          "refId": "A"
+        }
+      ],
+      "title": "❗ Ошибки Telegram API и БД",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "id": 3,
+      "targets": [
+        {
+          "expr": "sum by (emoji) (count_over_time({container=\"reaction-bot\", event=\"reaction_added\"}[30m]))",
+          "legendFormat": "{{emoji}}",
+          "refId": "A"
+        }
+      ],
+      "title": "💬 Распределение реакций по эмодзи",
+      "type": "piechart"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "id": 4,
+      "targets": [
+        {
+          "expr": "count_over_time({container=\"reaction-bot\"}[5m])",
+          "legendFormat": "Активность логов",
+          "refId": "A"
+        }
+      ],
+      "title": "⚙️ Общая активность бота",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["telegram", "bot", "loki"],
+  "templating": { "list": [] },
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Telegram Reaction Bot Dashboard",
+  "uid": "reaction-bot-dashboard",
+  "version": 1
+}
